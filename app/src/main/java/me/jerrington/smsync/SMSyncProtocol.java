@@ -31,10 +31,10 @@ public class SMSyncProtocol {
         if (this.isStarted)
             throw new StateException();
 
-        socketOut.printf("SMS\n\n");
+        socketOut.printf("SMS\n");
         nextResponse().expect(StatusCode.HELLO);
         Timber.d("Got first hello.");
-        socketOut.printf("Key %s\n\n", smsyncKey);
+        socketOut.printf("Key %s\n", smsyncKey);
         nextResponse().expect(StatusCode.HELLO);
         Timber.d("Got second hello.");
 
@@ -57,7 +57,7 @@ public class SMSyncProtocol {
         if (response.getStatusCode() == StatusCode.NO_THANKS) {
             // no op
         } else if (response.getStatusCode() == StatusCode.GO_AHEAD) {
-            socketOut.printf("%s\n\n", messageDAO.getMessage().getMessageBody());
+            socketOut.printf("%s\n", messageDAO.getMessage().getMessageBody());
             nextResponse().expect(StatusCode.OK);
         } else {
             throw new UnexpectedResponseException(response.getStatusCode(), StatusCode.GO_AHEAD);
